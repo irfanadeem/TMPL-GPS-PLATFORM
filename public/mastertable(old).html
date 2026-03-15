@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Panel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+
+
+    <style>
+        th {
+            background-color: #f8f9fa;
+            text-align: center;
+            white-space: nowrap; /* Prevents wrapping */
+        }
+        td {
+            text-align: center;
+        }
+        select {
+            width: 100%;
+            border: none;
+            background: transparent;
+        }
+           
+  #myTable td:nth-child(6),
+        #myTable td:nth-child(7),
+        #myTable td:nth-child(8),
+        #myTable td:nth-child(9){
+    background-color: antiquewhite;
+  }
+          #myTable td:nth-child(10),
+        #myTable td:nth-child(11),
+        #myTable td:nth-child(12)
+        {
+    background-color: cornsilk;
+  }
+
+    </style>
+    
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="panel panel-default">
+            <!-- Panel Heading -->
+            <div class="panel-heading  text-white p-3" style="background-color: #fd7c0d">
+                <div class="panel-title">
+                    <i class="fas fa-calendar-alt"></i> Analytics
+                </div>
+            </div>
+
+            <!-- Panel Body -->
+            <div class="panel-body" style="height: 800px; width: 100%; overflow-y: auto;">
+<div class="container" style="border: 2px solid #ccc; border-radius: 5px; padding: 10px; margin: 10px auto; max-width: 100%;">
+    <div class="d-flex flex-wrap align-items-center gap-3">
+        <!-- From Date -->
+        <div>
+            <label for="from_date" class="form-label">From:</label>
+            <input type="date" class="form-control" name="from_date" id="from_date" value="2024-12-14">
+        </div>
+
+        <!-- To Date -->
+        <div>
+            <label for="to_date" class="form-label">To:</label>
+            <input type="date" class="form-control" name="to_date" id="to_date" value="2024-12-14">
+        </div>
+
+        <!-- Department Dropdown -->
+        <div style="width: 30%">
+            <label for="department" class="form-label">Department:</label>
+            <select class="form-control selectpicker" id="department" name="department" data-live-search="true">
+                <option value="MPO" selected>MPO</option>
+                <option value="CDA CARES">CDA CARES</option>
+                <option value="Bulkwater">Bulk-Water</option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+            <button type="submit" class="btn text-white mt-4" style="background-color: #fd7c0d">Analytics</button>
+        </div>
+    </div>
+</div>
+
+
+                        <!-- Settings Panel -->
+                        
+                            <button class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#settingsPanel" style="margin-bottom: 20px;">
+                                <i class="fas fa-cogs"></i> Table Settings
+                            </button>
+                            <div class="collapse mt-2" id="settingsPanel">
+                                <div class="card card-body">
+                                    <h6>Toggle Columns</h6>
+                                  
+                                    
+<div class="form-check">
+    
+    <!-- Main Option -->
+    <input type="checkbox" class="form-check-input column-toggle" id="toggleFuel" data-column="5" checked>
+    <label class="form-check-label" for="toggleFuel">Fuel Stats</label>
+</div>
+
+<!-- Sub Options -->
+<div id="fuelStatsSubOptions" class="d-inline-flex flex-column ps-3 gap-2">
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleConsumption" checked>
+        <label class="form-check-label" for="toggleConsumption">Consumption</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleTheft" checked>
+        <label class="form-check-label" for="toggleTheft">Theft</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleRefill" checked>
+        <label class="form-check-label" for="toggleRefill">Refill</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleLevel" checked>
+        <label class="form-check-label" for="toggleLevel">Level</label>
+    </div>
+</div>
+                                    
+                                    <div class="form-check">
+    <!-- Main Option -->
+    <input type="checkbox" class="form-check-input column-toggle" id="toggleTravel" data-column="6" checked>
+        <label class="form-check-label" for="toggleTravel">Travel Details</label>
+</div>
+
+<!-- Sub Options -->
+<div id="travelStatsSubOptions" class="d-inline-flex flex-column ps-3 gap-2">
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggletravelled" checked>
+        <label class="form-check-label" for="toggleConsumption">Total Travelled</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="togglefuel-average" checked>
+        <label class="form-check-label" for="toggleTheft">Fuel Average</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleStops" checked>
+        <label class="form-check-label" for="toggleRefill">Stops</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="totalhrs" checked>
+        <label class="form-check-label" for="toggleLevel">Level</label>
+    </div>
+</div>
+                                    
+                   
+                                    <div class="form-check">
+    <!-- Main Option -->
+    <input type="checkbox" class="form-check-input column-toggle" id="toggleEngine" data-column="7" checked>
+        <label class="form-check-label" for="toggleEngine">Engine Hours</label>
+</div>
+
+<!-- Sub Options -->
+<div id="travelStatsSubOptions" class="d-inline-flex flex-column ps-3 gap-2">
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleTotal" checked>
+        <label class="form-check-label" for="toggleTotal">Total</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleIdle" checked>
+        <label class="form-check-label" for="toggleIdle">Idle</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleStops" checked>
+        <label class="form-check-label" for="toggleStops">Stops</label>
+    </div>
+  
+</div>        
+                                                                        <div class="form-check">
+    <!-- Main Option -->
+    <input type="checkbox" class="form-check-input column-toggle" id="toggleEvents" data-column="8" checked>
+        <label class="form-check-label" for="toggleEvents">Events</label>
+</div>
+
+<!-- Sub Options -->
+<div id="travelStatsSubOptions" class="d-inline-flex flex-column ps-3 gap-2">
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleTotal" checked>
+        <label class="form-check-label" for="toggleTotal">Fence Out</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleIdle" checked>
+        <label class="form-check-label" for="toggleIdle">Power Cut</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input column-toggle" id="toggleStops" checked>
+        <label class="form-check-label" for="toggleStops">FS Temper</label>
+    </div>
+  
+</div>    
+
+                                    <!-- Add more columns as needed -->
+                                </div>
+                            </div>
+                        
+                
+                                  <div class="btn-container" style="margin-bottom: 60px;">
+            <h4 style="float: left; margin-right: 5px;" >Analytics</h4>
+            <button style="float: right; margin-right: 5px;" class="btn btn-primary" id="downloadBtn">Download <i class="fas fa-download"></i></button>
+            <button style="float: right; margin-right: 5px;color: white" class="btn btn-info" id="printBtn">Print <i class="fas fa-print"></i></button>
+            <button style="float: right; margin-right: 5px;" class="btn btn-success" id="emailBtn">Email <i class="fas fa-envelope"></i></button>
+        </div>
+                <!-- Event Table -->
+                <div class="table-responsive">
+                    <table class="display table table-bordered" id="myTable">
+                        <thead>
+                            <!-- Grouped Heading -->
+                            <tr>
+                                <th rowspan="2">
+                                    <select id="filterDate">
+                                        <option value="">Date    </option>
+                                        <option value="14-12-2024">14/12/2024</option>
+                                        <option value="13-12-2024">13/12/2024</option>
+                                    </select>
+                                </th>
+                                <th rowspan="2">Day</th>
+                                <th rowspan="2">
+                                    <select id="filterDepartment">
+                                        <option value="">Department</option>
+                                        <option value="Department1">Department1</option>
+                                        <option value="Department2">Department2</option>
+                                    </select>
+                                </th>
+                                <th rowspan="2">
+                                    <select id="filterAsset     ">
+                                        <option value="">Asset</option>
+                                        <option value="BCA-187">BCA:187</option>
+                                        <option value="ATK-396">ATK:396</option>
+                                    </select>
+                                </th>
+                                <th rowspan="2">
+                                    <select id="filterSensor   ">
+                                        <option value="">Sensor</option>
+                                        <option value="FS">FS</option>
+                                        <option value="Sensor2">Sensor2</option>
+                                    </select>
+                                </th>
+                                <th colspan="4" style="background-color: antiquewhite;text-align: center">Fuel Statistics </th>
+                                <th colspan="3" style="background-color: cornsilk;text-align: center">Travel Details</th>
+                                <th colspan="3" style="text-align: center">Engine Hours</th>
+                                <th colspan="3" style="text-align: center">Events</th>
+                            </tr>
+                            <!-- Sub-Headings -->
+                            <tr>
+                                <td rowspan="2" id="consumption" style="background-color: antiquewhite;">Consumption(Ltr)
+                                 <select id="filterConsumption   ">
+                                        <option value=""></option>
+                                        <option value="300">300</option>
+                                        <option value="200">200</option>
+                                    </select>
+                                </td>
+                                    <td rowspan="2" id="theft" style="background-color: antiquewhite;">Theft(Ltr)
+                                 <select id="filterTheft   ">
+                                        <option value=""></option>
+                                        <option value="300">30</option>
+                                        <option value="200">20</option>
+                                    </select>
+                                </td>
+                                    <td rowspan="2" id="refill" style="background-color: antiquewhite;">Refill(Ltr)
+                                 <select id="filterRefill   ">
+                                        <option value=""></option>
+                                        <option value="300">100</option>
+                                        <option value="200">200</option>
+                                    </select>
+                                </td>
+                                    <td rowspan="2" id="level" style="background-color: antiquewhite;">Level(Ltr)
+                                 <select id="filterLevel   ">
+                                        <option value=""></option>
+                                        <option value="300">400</option>
+                                        <option value="200">200</option>
+                                    </select>
+                                </td>
+                                 <td rowspan="2" id="travelled" style="background-color: cornsilk;">Total Travelled(KM)
+                                 <select id="filtertravelled">
+                                        <option value=""></option>
+                                        <option value="200">200</option>
+                                        <option value="300">300</option>
+                                    </select>
+                                </td>
+                                    <td rowspan="2" id="fuel-average" style="background-color: cornsilk;">Fuel Average(KM)
+                                 <select id="filterfuel-average">
+                                        <option value=""></option>
+                                        <option value="5">5</option>
+                                        <option value="7">7</option>
+                                    </select>
+                                </td>
+                                        <td rowspan="2" id="stops" style="background-color: cornsilk;">Stops(KM)
+                                 <select id="filterstops">
+                                        <option value=""></option>
+                                        <option value="2">2</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </td>
+                                          <td rowspan="2" id="stops" style="background-color: transparent;">Total(Hrs)
+                                 <select id="filterstops">
+                                        <option value=""></option>
+                                        <option value="190">190</option>
+                                        <option value="200">200</option>
+                                    </select>
+                                </td>
+                                            <td rowspan="2" id="idle" style="background-color: transparent;">Idle(Hrs)
+                                 <select id="filteridle">
+                                        <option value=""></option>
+                                        <option value="5">5</option>
+                                        <option value="2">2</option>
+                                    </select>
+                                </td>
+                                               <td rowspan="2" id="stops" style="background-color: transparent;">Stops(Hrs)
+                                 <select id="filterstops">
+                                        <option value=""></option>
+                                        <option value="10">10</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                                     <td rowspan="2" id="fenceOut" style="background-color: transparent;">Stops(Hrs)
+                                 <select id="filterfenceOut">
+                                        <option value=""></option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                                        <td rowspan="2" id="powercut" style="background-color: transparent;">PowerCut(Hrs)
+                                 <select id="filterpowercut">
+                                        <option value=""></option>
+                                        <option value="8">8</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                                                            <td rowspan="2" id="fs-temper" style="background-color: transparent;">FS Temper(Hrs)
+                                 <select id="filterfs-temper">
+                                        <option value=""></option>
+                                        <option value="8">8</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>14/12/2024</td>
+                                <td>Saturday</td>
+                                <td>Department1</td>
+                                <td>BCA:187</td>
+                                <td>FS</td>
+                                <td>300</td>
+                                <td>20</td>
+                                <td>100</td>
+                                <td>400</td>
+                                <td>200</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>190</td>
+                                <td>5</td>
+                                <td>10</td>
+                                <td>4</td>
+                                <td>8</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>14/12/2024</td>
+                                <td>Saturday</td>
+                                <td>Department1</td>
+                                <td>BCA:187</td>
+                                <td>FS</td>
+                                <td>300</td>
+                                <td>20</td>
+                                <td>100</td>
+                                <td>400</td>
+                                <td>200</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>190</td>
+                                <td>5</td>
+                                <td>10</td>
+                                <td>4</td>
+                                <td>8</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>14/12/2024</td>
+                                <td>Saturday</td>
+                                <td>Department1</td>
+                                <td>BCA:187</td>
+                                <td>FS</td>
+                                <td>300</td>
+                                <td>20</td>
+                                <td>100</td>
+                                <td>400</td>
+                                <td>200</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>190</td>
+                                <td>5</td>
+                                <td>10</td>
+                                <td>4</td>
+                                <td>8</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>14/12/2024</td>
+                                <td>Saturday</td>
+                                <td>Department1</td>
+                                <td>BCA:187</td>
+                                <td>FS</td>
+                                <td>300</td>
+                                <td>20</td>
+                                <td>100</td>
+                                <td>400</td>
+                                <td>200</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>190</td>
+                                <td>5</td>
+                                <td>10</td>
+                                <td>4</td>
+                                <td>8</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>14/12/2024</td>
+                                <td>Saturday</td>
+                                <td>Department1</td>
+                                <td>BCA:187</td>
+                                <td>FS</td>
+                                <td>300</td>
+                                <td>20</td>
+                                <td>100</td>
+                                <td>400</td>
+                                <td>200</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>190</td>
+                                <td>5</td>
+                                <td>10</td>
+                                <td>4</td>
+                                <td>8</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>14/12/2024</td>
+                                <td>Saturday</td>
+                                <td>Department1</td>
+                                <td>BCA:187</td>
+                                <td>FS</td>
+                                <td>300</td>
+                                <td>20</td>
+                                <td>100</td>
+                                <td>400</td>
+                                <td>200</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>190</td>
+                                <td>5</td>
+                                <td>10</td>
+                                <td>4</td>
+                                <td>8</td>
+                                <td>2</td>
+                            </tr>
+
+                            <tr>
+                                <td>14/12/2024</td>
+                                <td>Saturday</td>
+                                <td>Department1</td>
+                                <td>BCA:187</td>
+                                <td>FS</td>
+                                <td>300</td>
+                                <td>20</td>
+                                <td>100</td>
+                                <td>400</td>
+                                <td>200</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>190</td>
+                                <td>5</td>
+                                <td>10</td>
+                                <td>4</td>
+                                <td>8</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>14/12/2024</td>
+                                <td>Saturday</td>
+                                <td>Department1</td>
+                                <td>BCA:187</td>
+                                <td>FS</td>
+                                <td>300</td>
+                                <td>20</td>
+                                <td>100</td>
+                                <td>400</td>
+                                <td>200</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>190</td>
+                                <td>5</td>
+                                <td>10</td>
+                                <td>4</td>
+                                <td>8</td>
+                                <td>2</td>
+                            </tr>
+
+                            <!-- Additional rows -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+       
+            </div>
+        </div>
+    </div>
+ <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+  $(document).ready(function () {
+            // Initialize DataTable
+            var table = $('#myTable').DataTable();
+
+            // Download CSV functionality
+            $('#downloadBtn').click(function () {
+                var csv = [];
+                var headers = [];
+                $('#myTable thead th').each(function () {
+                    headers.push($(this).text());
+                });
+                csv.push(headers.join(','));
+
+                table.rows().every(function () {
+                    csv.push(this.data().join(','));
+                });
+
+                var csvData = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+                var link = document.createElement('a');
+                link.href = URL.createObjectURL(csvData);
+                link.download = 'table_data.csv';
+                link.click();
+            });
+
+            // Print functionality
+            $('#printBtn').click(function () {
+                var printWindow = window.open('', '', 'height=600,width=800');
+                printWindow.document.write('<html><head><title>Print Table</title></head><body>');
+                printWindow.document.write('<table border="1">' + $('#myTable').html() + '</table>');
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            });
+
+            // Email functionality (Note: Mailto attachments not supported)
+            $('#emailBtn').click(function () {
+                alert('Mail functionality requires a backend to send attachments.');
+            });
+        });
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const table = document.getElementById('myTable');
+        const checkboxes = document.querySelectorAll('.column-toggle');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const columnIndex = parseInt(this.getAttribute('data-column'), 10);
+                const isChecked = this.checked;
+
+                // Toggle visibility for each row and header
+                Array.from(table.rows).forEach(row => {
+                    const cell = row.cells[columnIndex];
+                    if (cell) {
+                        cell.style.display = isChecked ? '' : 'none';
+                    }
+                });
+            });
+        });
+
+        // Initialize column visibility based on checkboxes
+        checkboxes.forEach(checkbox => checkbox.dispatchEvent(new Event('change')));
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        // Initialize DataTable
+        const table = $('#myTable').DataTable({
+            initComplete: function () {
+                // Add dropdown filters for each column
+                this.api()
+                    .columns()
+                    .every(function () {
+                        const column = this;
+                        const header = $(column.header());
+
+                        // If there's a filter dropdown, populate it with unique column values
+                        if (header.find('select').length) {
+                            const select = header.find('select');
+                            column
+                                .data()
+                                .unique()
+                                .sort()
+                                .each(function (d) {
+                                    select.append('<option value="' + d + '">' + d + '</option>');
+                                });
+
+                            // Add event listener for filter
+                            select.on('change', function () {
+                                const val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column.search(val ? '^' + val + '$' : '', true, false).draw();
+                            });
+                        }
+                    });
+            },
+        });
+    });
+    
+    document.getElementById('toggleFuel').addEventListener('change', function () {
+    // Get all sub-options under the main option
+    const subOptions = document.querySelectorAll('#fuelStatsSubOptions .form-check-input');
+
+    // Toggle all sub-options based on the main checkbox
+    subOptions.forEach(option => {
+        option.checked = this.checked; // Match the state of the main option
+    });
+});
+
+document.querySelectorAll('#fuelStatsSubOptions .form-check-input').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        // If any sub-option is unchecked, uncheck the main option
+        const mainCheckbox = document.getElementById('toggleFuel');
+        if (!this.checked) {
+            mainCheckbox.checked = false;
+        } else {
+            // Check if all sub-options are checked; if so, check the main option
+            const allChecked = Array.from(document.querySelectorAll('#fuelStatsSubOptions .form-check-input')).every(
+                option => option.checked
+            );
+            mainCheckbox.checked = allChecked;
+        }
+    });
+});
+// Main Option Event (Travel Details)
+document.getElementById('toggleTravel').addEventListener('change', function () {
+    const isChecked = this.checked;
+    const relatedCheckboxes = document.querySelectorAll('#travelStatsSubOptions .form-check-input');
+
+    // Toggle sub-options and their corresponding columns
+    relatedCheckboxes.forEach(checkbox => {
+        checkbox.checked = isChecked;
+
+        const columnId = checkbox.id.replace('toggle', '').toLowerCase(); // Extract column ID
+        const column = document.getElementById(columnId);
+
+        if (column) {
+            column.style.display = isChecked ? '' : 'none';
+        }
+    });
+});
+
+// Sub-Options Events
+document.querySelectorAll('#travelStatsSubOptions .form-check-input').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        const columnId = this.id.replace('toggle', '').toLowerCase(); // Extract column ID
+        const column = document.getElementById(columnId);
+
+        if (column) {
+            column.style.display = this.checked ? '' : 'none';
+        }
+
+        // Update the main checkbox based on sub-option states
+        const allChecked = Array.from(document.querySelectorAll('#travelStatsSubOptions .form-check-input')).every(
+            option => option.checked
+        );
+        document.getElementById('toggleTravel').checked = allChecked;
+    });
+});
+
+</script>
+<script>
+document.getElementById('toggleFuel').addEventListener('change', function () {
+    // Get the state of the "Fuel Stats" checkbox
+    const isChecked = this.checked;
+
+    // Find all related sub-options
+    const relatedCheckboxes = document.querySelectorAll('#fuelStatsSubOptions .form-check-input');
+
+    // Toggle sub-options to match the state of the main checkbox
+    relatedCheckboxes.forEach(checkbox => {
+        checkbox.checked = isChecked;
+
+        // Trigger the function for each sub-option
+        const columnId = checkbox.id.replace('toggle', '').toLowerCase(); // Extract column name from checkbox ID
+        const column = document.getElementById(columnId); // Find the corresponding <th> by ID
+
+        if (column) {
+            column.style.display = isChecked ? '' : 'none'; // Show or hide the column
+        }
+    });
+});
+
+// Attach the event listener to sub-options
+document.querySelectorAll('#fuelStatsSubOptions .form-check-input').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        const columnId = this.id.replace('toggle', '').toLowerCase(); // Extract column name from checkbox ID
+        const column = document.getElementById(columnId); // Find the corresponding <th> by ID
+
+        if (column) {
+            column.style.display = this.checked ? '' : 'none'; // Show or hide the column
+        }
+
+        // Update the main "Fuel Stats" checkbox based on sub-option states
+        const allChecked = Array.from(document.querySelectorAll('#fuelStatsSubOptions .form-check-input')).every(
+            option => option.checked
+        );
+        document.getElementById('toggleFuel').checked = allChecked;
+    });
+});
+
+
+    </script>
+</body>
+</html>

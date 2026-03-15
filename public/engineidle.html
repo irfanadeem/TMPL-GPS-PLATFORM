@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Lookup</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+
+    <!-- Font Awesome Icons (for the buttons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+
+        <style>
+        body{
+             background-color: #1656a5;
+
+        }
+        .modal-full {
+            min-width: 90%;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+        /* Bootstrap shadow */
+        .shadow-container {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .btn-container {
+            margin-bottom: 20px;
+        }
+          .dash-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #1e2944;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dash-table thead tr {
+            background-color: #1656a5;
+            color: white;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .dash-table th, td {
+            padding: 12px 16px;
+        }
+
+        .dash-table tbody tr {
+            border-bottom: 1px solid #2a3b5f;
+            color: white;
+        }
+
+        .dash-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .dash-table tbody tr:hover {
+            background-color: #2b3e65;
+        }
+
+        .dash-table tfoot tr {
+            background-color: #fabf4e;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+  
+    <div id="EventsLookupTableContainer" class="container">
+        <!-- Buttons for Download, Print, Email -->
+     
+        
+       
+              <!-- DataTable with Bootstrap shadow -->
+        <div class="shadow-container" style="color: white;background-color: #171821">
+               <div class="btn-container" style="margin-bottom: 60px;">
+            <h4 style="float: left; margin-right: 5px;" >Engine Stats</h4>
+           
+                      <div style="float: right;">
+                         <button class="btn w-100 mt-4 shadow rounded tooltip-btn" id="downloadBtn" style="background-color:transparent" data-tooltip="Download">
+                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="20" height="20" fill="#605DFF">
+                            <path d="M0 448c0 35.3 28.7 64 64 64l160 0 0-128c0-17.7 14.3-32 32-32l128 0 0-288c0-35.3-28.7-64-64-64L64 0C28.7 0 0 28.7 0 64L0 448zM171.3 75.3l-96 96c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l96-96c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6zm96 32l-160 160c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l160-160c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6zM384 384l-128 0 0 128L384 384z" />
+                             </svg>
+                            </button>
+                            <button class="btn w-100 mt-4 shadow rounded tooltip-btn"  id="printBtn" style="background-color:transparent" data-tooltip="Print">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20" fill="#605DFF">
+                            <path d="M128 0C92.7 0 64 28.7 64 64l0 96 64 0 0-96 226.7 0L384 93.3l0 66.7 64 0 0-66.7c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0L128 0zM384 352l0 32 0 64-256 0 0-64 0-16 0-16 256 0zm64 32l32 0c17.7 0 32-14.3 32-32l0-96c0-35.3-28.7-64-64-64L64 192c-35.3 0-64 28.7-64 64l0 96c0 17.7 14.3 32 32 32l32 0 0 64c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-64zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+                             </svg>
+                             </button>
+                                  </div>
+        </div>
+            <table id="myTable" class="display table dash-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Department</th>
+                        <th>Vehicle</th>
+                        <th>Engine Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-12-19</td>
+                        <td>MPO</td>
+                        <td>BCA-187</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td>2024-12-19</td>
+                        <td>MPO</td>
+                        <td>BAA-197</td>
+                        <td>350</td>
+                    </tr>
+                    <tr>
+                        <td>2024-12-19</td>
+                        <td>MPO</td>
+                        <td>GCA-187</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td>2024-12-19</td>
+                        <td>MPO</td>
+                        <td>BCA-187</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td>2024-12-19</td>
+                        <td>MPO</td>
+                        <td>BCA-187</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td>2024-12-19</td>
+                        <td>MPO</td>
+                        <td>BCA-187</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td>2024-12-19</td>
+                        <td>MPO</td>
+                        <td>BCA-187</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td>2024-12-19</td>
+                        <td>MPO</td>
+                        <td>BCA-187</td>
+                        <td>300</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+        // Initialize DataTable with sorting and searching enabled by default
+        var table = $('#myTable').DataTable();
+
+        // Download CSV functionality
+        $('#downloadBtn').click(function () {
+            var csv = [];
+            var rows = table.rows().data();
+            // Extract headers
+            var headers = [];
+            table.columns().every(function () {
+                headers.push(this.header().innerText);
+            });
+            csv.push(headers.join(','));
+
+            // Extract table rows
+            rows.each(function (rowData) {
+                csv.push(rowData.join(','));
+            });
+
+            var csvData = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(csvData);
+            link.download = 'table_data.csv';
+            link.click();
+        });
+
+        // Print Table functionality
+        $('#printBtn').click(function () {
+            var printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Print Table</title></head><body>');
+            printWindow.document.write(table.table().node().outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        });
+
+        // Email Table (CSV) functionality
+        $('#emailBtn').click(function () {
+            var csv = [];
+            var rows = table.rows().data();
+            // Extract headers
+            var headers = [];
+            table.columns().every(function () {
+                headers.push(this.header().innerText);
+            });
+            csv.push(headers.join(','));
+
+            // Extract table rows
+            rows.each(function (rowData) {
+                csv.push(rowData.join(','));
+            });
+
+            var csvData = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(csvData);
+            link.download = 'table_data.csv';
+
+            // Prepare mailto link with attachment (Note: attachments via mailto are not supported)
+            var mailtoLink = 'mailto:?subject=Data Table&body=Please find the attached CSV file with the table data.%0A%0A' + encodeURIComponent(csv.join('\n'));
+            window.location.href = mailtoLink;
+        });
+    });
+    </script>
+</body>
+</html>

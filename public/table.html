@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bootstrap Table with Grouped Headings</title>
+  
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Table CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <table
+      id="table"
+      data-url="table.json"
+      data-filter-control="true"
+      data-show-search-clear-button="true"
+      class="table">
+      <thead>
+        <!-- Grouped Heading -->
+        <tr>
+          <th rowspan="2" data-field="date">Date</th>
+          <th rowspan="2" data-field="day">Day</th>
+          <th rowspan="2" data-field="department">Department</th>
+          <th rowspan="2" data-field="asset">Asset</th>
+          <th rowspan="2" data-field="sensor">Sensor</th>
+          <th colspan="4" style="background-color: antiquewhite; text-align: center;">Fuel Statistics</th>
+          <th colspan="3" style="background-color: cornsilk; text-align: center;">Travel Details</th>
+          <th colspan="3" style="text-align: center;">Engine Hours</th>
+          <th colspan="3" style="text-align: center;">Events</th>
+        </tr>
+        <!-- Sub-Headings -->
+        <tr>
+          <th data-field="consumption" data-filter-control="select" style="background-color: antiquewhite;">Consumption (Ltr)</th>
+          <th data-field="theft" data-filter-control="select" style="background-color: antiquewhite;">Theft (Ltr)</th>
+          <th data-field="refill" data-filter-control="select" style="background-color: antiquewhite;">Refill (Ltr)</th>
+          <th data-field="level" data-filter-control="select" style="background-color: antiquewhite;">Level (Ltr)</th>
+          <th data-field="travelled" data-filter-control="select" style="background-color: cornsilk;">Total Travelled (KM)</th>
+          <th data-field="fuelAverage" data-filter-control="select" style="background-color: cornsilk;">Fuel Average (KM)</th>
+          <th data-field="stopsKm" data-filter-control="select" style="background-color: cornsilk;">Stops (KM)</th>
+          <th data-field="totalHrs" data-filter-control="select">Total (Hrs)</th>
+          <th data-field="idleHrs" data-filter-control="select">Idle (Hrs)</th>
+          <th data-field="stopsHrs" data-filter-control="select">Stops (Hrs)</th>
+          <th data-field="fenceOut" data-filter-control="select">Fence Out (Hrs)</th>
+          <th data-field="powerCut" data-filter-control="select">Power Cut (Hrs)</th>
+          <th data-field="fsTemper" data-filter-control="select">FS Temper (Hrs)</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <!-- Bootstrap JS and Popper.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <!-- Bootstrap Table JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.js"></script>
+  
+  <!-- Filter Control Extension -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+  
+  <script>
+    $(function() {
+      $('#table').bootstrapTable();
+    });
+  </script>
+</body>
+</html>

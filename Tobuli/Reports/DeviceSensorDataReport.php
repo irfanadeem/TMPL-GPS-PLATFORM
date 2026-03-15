@@ -1,0 +1,115 @@
+<?php
+
+namespace Tobuli\Reports;
+
+use Tobuli\Helpers\Formatter\Facades\Formatter;
+use Tobuli\History\DeviceHistory;
+
+abstract class DeviceSensorDataReport extends DeviceHistoryReport
+{
+    abstract protected function getSensorTypes();
+
+    protected function getActionsList()
+    {
+        return [];
+    }
+
+    protected function getDeviceHistoryData($device)
+    {
+        $history = new DeviceHistory($device);
+
+        $history->setConfig([
+            'stop_seconds'      => $this->stop_seconds,
+            'speed_limit'       => $this->speed_limit,
+            'stop_speed'        => $device->min_moving_speed,
+            'min_fuel_fillings' => $device->min_fuel_fillings,
+            'min_fuel_thefts'   => $device->min_fuel_thefts,
+        ]);
+
+        $types = $this->getSensorTypes();
+        $sensors = $device->sensors->filter(function($sensor) use ($types) {
+            return in_array($sensor->type, $types);
+        });
+
+        if ( ! $sensors)
+            return null;
+
+        $history->setSensors($sensors);
+
+        $history->registerActions(
+            $this->getActionsList()
+        );
+
+        $history->setRange($this->date_from, $this->date_to);
+        $history->get();
+
+        return $history;
+    }
+
+    protected function generateDevice($device)
+    {
+        $history = $this->getDeviceHistoryData($device);
+
+        if ( ! $history) {
+            // Debug: Check if no sensors found
+            $types = $this->getSensorTypes();
+            $sensors = $device->sensors->filter(function($sensor) use ($types) {
+                return in_array($sensor->type, $types);
+            });
+            
+            if ($sensors->isEmpty()) {
+                return [
+                    'meta' => $this->getDeviceMeta($device),
+                    'error' => 'No ' . implode(', ', $types) . ' sensors found for this device. Please configure fuel tank sensors first.'
+                ];
+            }
+            
+            return null;
+        }
+
+        $data = $history->getSensorsData();
+
+        if ( ! $data) {
+            return [
+                'meta' => $this->getDeviceMeta($device),
+                'error' => 'No sensor data found for the selected date range. Please check if the device has sent data during this period.'
+            ];
+        }
+
+        $response = [
+            'meta'    => $this->getDeviceMeta($device),
+            'sensors' => $data,
+        ];
+
+        if ($totals = $this->getStats($history)) {
+            $response['stats'] = $totals;
+        }
+
+        return $response;
+    }
+
+    protected function getStats(DeviceHistory $history)
+    {
+        return null;
+    }
+
+    protected function afterGenerate()
+    {
+        $this->convertSensorDataTimestamps($this->items);
+    }
+
+    protected function convertSensorDataTimestamps(array &$items)
+    {
+        foreach ($items as &$item) {
+            if (empty($item['sensors'])) {
+                continue;
+            }
+
+            foreach ($item['sensors'] as &$sensor) {
+                foreach ($sensor['values'] as &$value) {
+                    $value['t'] = Formatter::time()->timestamp(date('Y-m-d H:i:s', $value['t']));
+                }
+            }
+        }
+    }
+}
